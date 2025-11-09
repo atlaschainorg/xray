@@ -1,4 +1,4 @@
-// https://github.com/solana-labs/explorer/blob/master/src/utils/program-logs.ts
+// https://github.com/atlas-labs/explorer/blob/master/src/utils/program-logs.ts
 
 import { getProgramName } from "./program-name";
 

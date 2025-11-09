@@ -1,4 +1,4 @@
-// https://github.com/solana-labs/explorer/blob/master/app/components/account/ConcurrentMerkleTreeCard.tsx
+// https://github.com/atlas-labs/explorer/blob/master/app/components/account/ConcurrentMerkleTreeCard.tsx
 
 import { t } from "$lib/trpc/t";
 import { getRPCUrl } from "$lib/util/get-rpc-url";

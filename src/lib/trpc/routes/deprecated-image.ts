@@ -8,13 +8,13 @@ export const deprecatedImage = t.procedure
     .input(z.string())
     .query(async ({ input: account }) => {
         const response = await fetch(
-            `https://github.com/solana-labs/token-list/blob/main/assets/mainnet/${account}/logo.png?raw=true`
+            `https://github.com/atlas-labs/token-list/blob/main/assets/mainnet/${account}/logo.png?raw=true`
         );
 
         const contentType = response.headers.get("content-type");
 
         if (contentType?.includes("image/png")) {
-            return `https://github.com/solana-labs/token-list/blob/main/assets/mainnet/${account}/logo.png?raw=true`;
+            return `https://github.com/atlas-labs/token-list/blob/main/assets/mainnet/${account}/logo.png?raw=true`;
         } else {
             const url = getAPIUrl(
                 `/v0/token-metadata/?api-key=${HELIUS_API_KEY}`,

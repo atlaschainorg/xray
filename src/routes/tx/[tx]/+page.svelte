@@ -32,7 +32,7 @@
     const client = trpcWithQuery($page);
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
-    const isMainnetValue = network !== "devnet";
+    const isMainnetValue = network === "mainnet";
     let transaction: object | null = null;
 
     const rawTransaction = client.rawTransaction.createQuery([
@@ -282,7 +282,7 @@
                                     Cost for processing this transaction.
                                 </h3>
                             </div>
-                            <p class="text-xs md:text-sm">{data.fee} SOL</p>
+                            <p class="text-xs md:text-sm">{data.fee} ATLAS</p>
                         </div>
                     </div>
                 </div>

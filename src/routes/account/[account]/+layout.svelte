@@ -18,7 +18,7 @@
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
     const isMainnetValue = network === "mainnet";
-    const selectedNetwork = `network=${isMainnetValue ? "mainnet" : "devnet"}`;
+    const selectedNetwork = `network=${network || "testnet"}`;
     const accountInfo = client.accountInfo.createQuery([
         account,
         isMainnetValue,
@@ -78,9 +78,14 @@
             <div class="tabs w-full pt-1 md:w-auto">
                 <div />
                 <a
+                    href={`/account/${account}/history?${selectedNetwork}`}
+                    class="tab-bordered tab"
+                    class:tab-active={endsWith("/history")}>History</a
+                >
+                <a
                     href={`/account/${account}?${selectedNetwork}`}
                     class="tab-bordered tab"
-                    class:tab-active={endsWith(`${account}`)}>Transactions</a
+                    class:tab-active={endsWith(`${account}`)}>Overview</a
                 >
                 <a
                     href={`/account/${account}/tokens?${selectedNetwork}`}
@@ -110,7 +115,7 @@
                     >
                 {/if}
             </div>
-            {#if !endsWith("/tokens") && !endsWith("/assets") && !endsWith("/idl")}
+            {#if endsWith("/history") || endsWith(`${account}`)}
                 <button
                     class="btn-ghost btn-sm btn"
                     on:click={() => showModal("TRANSACTION_FILTER")}

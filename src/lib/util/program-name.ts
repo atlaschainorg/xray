@@ -1,4 +1,4 @@
-// Default Program Name : https://github.com/solana-labs/explorer/blob/master/src/utils/tx.ts
+// Default Program Name : https://github.com/atlas-labs/explorer/blob/master/src/utils/tx.ts
 
 import {
     BPF_LOADER_DEPRECATED_PROGRAM_ID,
@@ -43,7 +43,7 @@ export enum PROGRAM_NAMES {
 
     // other
     ACUMEN = "Acumen Program",
-    BREAK_SOLANA = "Break Solana Program",
+    BREAK_SOLANA = "Break Atlas Program",
     CHAINLINK_ORACLE = "Chainlink OCR2 Oracle Program",
     CHAINLINK_STORE = "Chainlink Store Program",
     CLOCKWORK_1 = "Clockwork Thread Program v1",
@@ -84,7 +84,7 @@ export enum PROGRAM_NAMES {
     SERUM_SWAP = "Serum Swap Program",
     SERUM_POOL = "Serum Pool",
     SOLEND = "Solend Program",
-    SOLIDO = "Lido for Solana Program",
+    SOLIDO = "Lido for Atlas Program",
     STEP_SWAP = "Step Finance Swap Program",
     SWIM_SWAP = "Swim Swap Program",
     SWITCHBOARD = "Switchboard Oracle Program",
@@ -92,8 +92,8 @@ export enum PROGRAM_NAMES {
     WORMHOLE_CORE = "Wormhole Core Bridge",
     WORMHOLE_TOKEN = "Wormhole Token Bridge",
     WORMHOLE_NFT = "Wormhole NFT Bridge",
-    SOLANART = "Solanart",
-    SOLANART_GO = "Solanart - Global offers",
+    SOLANART = "Atlasart",
+    SOLANART_GO = "Atlasart - Global offers",
     STEPN_DEX = "STEPN Dex",
     OPENBOOK_DEX = "OpenBook Dex",
 }

@@ -9,7 +9,7 @@ interface Username {
     username: string;
 }
 
-const getSolanaDomain = async (usernames: Username[], address = "") => {
+const getAtlasDomain = async (usernames: Username[], address = "") => {
     const url = `https://api.helius.xyz/v0/addresses/${address}/names?api-key=${HELIUS_API_KEY}`;
     const response = await fetch(url);
     const data = await response.json();
@@ -36,7 +36,7 @@ export const accountUsernames = t.procedure
     )
     .query(async ({ input: address }) => {
         const usernames: Username[] = [];
-        await getSolanaDomain(usernames, address);
+        await getAtlasDomain(usernames, address);
 
         return usernames || [];
     });

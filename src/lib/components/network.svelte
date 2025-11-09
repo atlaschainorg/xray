@@ -1,43 +1,53 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    let isMainnetValue = true;
+    type NetworkType = "mainnet" | "devnet" | "testnet";
+    let selectedNetwork: NetworkType = "testnet";
 
     onMount(() => {
-        const savedIsMainnet = localStorage.getItem("isMainnet");
-        if (savedIsMainnet !== null) {
-            isMainnetValue = JSON.parse(savedIsMainnet);
+        const params = new URLSearchParams(window.location.search);
+        const network = params.get("network") as NetworkType;
+        if (network && ["mainnet", "devnet", "testnet"].includes(network)) {
+            selectedNetwork = network;
+        } else {
+            selectedNetwork = "testnet";
         }
     });
-    onMount(() => {
+
+    function changeNetwork(event: Event) {
+        selectedNetwork = (event.target as HTMLSelectElement).value as NetworkType;
         const params = new URLSearchParams(window.location.search);
-        const network = params.get("network");
-        isMainnetValue = network !== "devnet";
-        localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
-    });
-    function toggleNetwork(event: Event) {
-        isMainnetValue = (event.target as HTMLInputElement).checked;
-        localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
-        const params = new URLSearchParams(window.location.search);
-        params.set("network", isMainnetValue ? "mainnet" : "devnet");
+        params.set("network", selectedNetwork);
         history.replaceState({}, "", "?" + params.toString());
         history.go(0);
     }
+
+    export let compact = false;
 </script>
 
-<div
-    class="toggle-container m-auto mt-2 flex w-full flex-col justify-center p-4"
->
-    <label class="toggle-label m-auto flex flex-col">
-        <input
-            type="checkbox"
-            class="toggle flex justify-center"
-            bind:checked={isMainnetValue}
-            on:change={toggleNetwork}
-        />
-        <span class="toggle-mark" />
-    </label>
-    <span class="network-text m-auto my-1 flex font-bold"
-        >{isMainnetValue ? "Mainnet" : "Devnet"}</span
+{#if compact}
+    <select
+        class="select select-bordered select-sm max-w-xs bg-base-200 text-xs font-semibold"
+        bind:value={selectedNetwork}
+        on:change={changeNetwork}
     >
-</div>
+        <option value="mainnet">Mainnet</option>
+        <option value="testnet">Testnet</option>
+        <option value="devnet">Devnet</option>
+    </select>
+{:else}
+    <div class="flex flex-col gap-2">
+        <label class="label">
+            <span class="label-text font-semibold">Network</span>
+        </label>
+        <select
+            class="select select-bordered w-full max-w-xs bg-base-200"
+            bind:value={selectedNetwork}
+            on:change={changeNetwork}
+        >
+            <option value="mainnet">Mainnet</option>
+            <option value="testnet">Testnet</option>
+            <option value="devnet">Devnet</option>
+        </select>
+    </div>
+{/if}

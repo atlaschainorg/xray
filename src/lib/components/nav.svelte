@@ -6,14 +6,17 @@
     import Icon from "$lib/components/icon.svelte";
     import Search from "$lib/components/search.svelte";
     import Stats from "$lib/components/stats.svelte";
+    import Network from "$lib/components/network.svelte";
 
     import { showModal } from "$lib/state/stores/modals";
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
-    const isMainnetValue = network !== "devnet";
+    const isMainnetValue = network === "mainnet";
 </script>
 
-<Stats />
+{#if $page.url.pathname !== "/"}
+    <Stats />
+{/if}
 <nav
     class="sticky left-0 top-0 z-40 grid h-full grid-cols-6 items-center justify-between border bg-black p-1 px-0"
 >
@@ -30,7 +33,7 @@
                 href="/?network={isMainnetValue ? 'mainnet' : 'devnet'}"
                 rel="noreferrer"
             >
-                <span class="text-3xl">XRAY</span>
+                <span class="text-3xl">Summit Explorer</span>
             </a>
         </div>
 
@@ -43,24 +46,21 @@
         {/if}
     </div>
 
-    <div class="col-span-2 flex items-center justify-end">
+    <div class="col-span-2 flex items-center justify-end gap-2">
+        <div class="mr-2">
+            <Network compact={true} />
+        </div>
         <div class="flex justify-end pr-2">
             {#if $page.url.pathname == "/"}
                 <div
                     class="tooltip"
-                    data-tip="Docs"
+                    data-tip="Stats"
                 >
                     <a
-                        href="https://docs.helius.dev/welcome/what-is-helius"
-                        rel="noreferrer"
-                        target="_blank"
-                        class="btn-ghost btn"
+                        href="/stats?network={network || 'testnet'}"
+                        class="btn-ghost btn text-sm font-medium"
                     >
-                        <img
-                            class="h-6 opacity-90"
-                            src="docs.svg"
-                            alt=""
-                        />
+                        Stats
                     </a>
                 </div>
             {/if}

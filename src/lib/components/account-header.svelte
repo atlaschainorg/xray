@@ -40,7 +40,7 @@
 
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
-    let isMainnetValue = network !== "devnet";
+    let isMainnetValue = network === "mainnet";
     const accountInfo = client.accountInfo.createQuery([
         account,
         isMainnetValue,
@@ -107,7 +107,7 @@
                 <div class="relative text-right">
                     <h1 class="text-md md:block">
                         <span class="">{$balance.toFixed(6)}</span>
-                        <span class="opacity-50">SOL</span>
+                        <span class="opacity-50">ATLAS</span>
                     </h1>
 
                     {#if !$price?.isLoading}

@@ -16,7 +16,7 @@
     const client = trpcWithQuery($page);
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
-    const isMainnetValue = network !== "devnet";
+    const isMainnetValue = network === "mainnet";
     const accountInfo = client.accountInfo.createQuery([
         account,
         isMainnetValue,
@@ -47,7 +47,7 @@
     <div class="content mt-2 flex items-center px-3 md:hidden">
         <h1 class="my-1 text-lg">
             <span class="">{$balance.toFixed(6)}</span>
-            <span class="opacity-50">SOL</span>
+            <span class="opacity-50">ATLAS</span>
         </h1>
         <span class="ml-3 text-xs opacity-50 md:block"
             >{formatMoney(worth)} USD</span
@@ -75,7 +75,7 @@
             <div class="relative text-right">
                 <h1 class="text-md hidden md:block">
                     <span class="">{$balance.toFixed(6)}</span>
-                    <span class="opacity-50">SOL</span>
+                    <span class="opacity-50">ATLAS</span>
                 </h1>
 
                 {#if !$price?.isLoading}

@@ -13,7 +13,7 @@ export const price = t.procedure
                 headers: {
                     Accept: "application/json",
                     "X-API-KEY": BIRDEYE_API_KEY,
-                    "x-chain": "solana",
+                    "x-chain": "atlas",
                 },
             }
         );

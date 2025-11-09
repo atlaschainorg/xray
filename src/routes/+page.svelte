@@ -38,18 +38,18 @@
     });
 </script>
 
-<div class="intro relative flex h-screen w-full items-center">
-    <div
-        style="background-image: url(/media/gradient.png);"
-        class="absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 bg-cover bg-center"
-    />
-
-    <div class="mx-auto w-full max-w-2xl md:-translate-y-1/4">
-        <div class="mb-10">
-            <h1 class="text-center text-9xl font-bold opacity-80">XRAY</h1>
+<div class="relative flex h-screen w-full flex-col items-center justify-center px-4">
+    <div class="mx-auto w-full max-w-2xl text-center">
+        <div class="mb-12 sm:mb-16">
+            <h1 class="text-7xl font-bold tracking-tight sm:text-8xl md:text-9xl">
+                Summit Explorer
+            </h1>
+            <p class="mt-4 text-sm opacity-60 sm:text-base">
+                Atlas Blockchain Explorer
+            </p>
         </div>
 
-        <div class="relative w-full px-3">
+        <div class="relative w-full">
             <Search
                 size="lg"
                 {searchError}
@@ -62,6 +62,9 @@
     </div>
 </div>
 
+<!-- Features section removed for cleaner Orb-style UX -->
+<!-- Uncomment below if you want to show features later -->
+<!--
 <IntersectionObserver
     once={true}
     rootMargin="100px"
@@ -86,7 +89,7 @@
                     >
                         Explore
                     </span>
-                    the Solana Blockchain
+                    the Atlas Blockchain
                 </h1>
             </div>
         {/if}
@@ -166,3 +169,4 @@
         </div>
     </section>
 </IntersectionObserver>
+-->

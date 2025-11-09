@@ -15,7 +15,7 @@ export const modals: Record<string, Modal> = {
     },
     MENU: {
         component: Menu,
-        title: "XRAY",
+        title: "Summit Explorer",
     },
     SELECT_MULTI_WALLET: {
         component: WalletSelector,

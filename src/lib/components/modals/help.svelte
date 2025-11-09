@@ -2,11 +2,9 @@
     import type { Icon as IconType } from "$lib/types";
     import Icon from "$lib/components/icon.svelte";
     const supportedSearches: Array<[IconType, string]> = [
-        ["globe", ".sol, .abc, .poor, .bonk domains"],
-        ["person", "Wallet/Account addresses"],
-        ["coins", "Token addresses"],
-        ["dots", "Token symbols (case sensitive)"],
-        ["lightning", "Transaction signatures"],
+        ["lightning", "Transaction hashes (64-character hex strings)"],
+        ["person", "Account addresses (40-66 character hex strings)"],
+        ["dots", "Block heights (numeric values)"],
     ];
 </script>
 

@@ -16,7 +16,7 @@
     const client = trpcWithQuery($page);
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
-    const isMainnetValue = network !== "devnet";
+    const isMainnetValue = network === "mainnet";
 
     const toUIAccountToken = (tokenData: any): UIAccountToken => {
         const balance = tokenData.token_info.balance;
@@ -126,7 +126,7 @@
                     <div class="col-span-2 p-1 md:col-span-1">
                         <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                         <div
-                            style="background-image: url(/media/tokens/solana.png)"
+                            style="background-image: url(/media/tokens/atlas.png)"
                             class="aspect-square w-full rounded-lg bg-cover"
                         />
                     </div>
@@ -134,7 +134,7 @@
                         class="col-span-10 flex items-center justify-between text-right md:col-span-11"
                     >
                         <div>
-                            <h4 class="font-semibold md:text-sm">SOL</h4>
+                            <h4 class="font-semibold md:text-sm">ATLAS</h4>
                         </div>
                         <div>
                             <h4 class="font-semibold md:text-sm">

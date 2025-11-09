@@ -1,22 +1,26 @@
 import { t } from "$lib/trpc/t";
 import { z } from "zod";
-
-import { Connection } from "@solana/web3.js";
-import { getRPCUrl } from "$lib/util/get-rpc-url";
-
-import { HELIUS_API_KEY } from "$env/static/private";
+import { cometbftFetch } from "$lib/util/cometbft-fetch";
 
 export const currentSlot = t.procedure
     .input(z.tuple([z.boolean()]))
     .query(async ({ input }) => {
         const [isMainnet] = input;
+        const port = isMainnet ? 26667 : 26657;
 
-        const connection = new Connection(
-            getRPCUrl(`?api-key=${HELIUS_API_KEY}`, isMainnet),
-            "confirmed"
-        );
+        try {
+            const statusData = await cometbftFetch(port, "/status");
 
-        const slot = await connection.getSlot();
+            if (statusData.error || !statusData.result) {
+                return 0;
+            }
 
-        return slot;
+            // Get the latest block height from CometBFT
+            const blockHeight = parseInt(statusData.result.sync_info.latest_block_height);
+
+            return blockHeight;
+        } catch (error) {
+            console.error("Error fetching current block height:", error);
+            return 0;
+        }
     });

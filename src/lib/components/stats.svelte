@@ -12,7 +12,8 @@
     const client = trpcWithQuery($page);
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
-    const isMainnetValue = network !== "devnet";
+    // isMainnetValue is false for testnet and devnet, true for mainnet
+    const isMainnetValue = network === "mainnet";
     const tps = client.tps.createQuery(isMainnetValue);
 
     const price = client.price.createQuery(SOL);
@@ -42,7 +43,7 @@
                     duration: 500,
                 }}
             />
-            <span class="font-bold">SOL/USD </span>
+            <span class="font-bold">ATLAS/USD </span>
             <span class="opacity-50">{formatMoney($price?.data)}</span>
         {:else}
             <div class="pulse my-2 h-2 w-20 rounded-lg bg-secondary" />
@@ -55,13 +56,13 @@
                     duration: 500,
                 }}
             />
-            <span class="font-bold">Current Slot </span>
+            <span class="font-bold">Block Height </span>
             <span class="opacity-50 hover:opacity-100">
                 <a
                     data-sveltekit-reload
                     href="/block/{$slot?.data}?network={isMainnetValue
                         ? 'mainnet'
-                        : 'devnet'}"
+                        : 'testnet'}"
                     class="pointer-events-auto hover:link-success"
                     >{$slot?.data?.toLocaleString()}</a
                 >

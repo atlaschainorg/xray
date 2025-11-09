@@ -40,7 +40,7 @@
     const address = $page.params.token;
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
-    const isMainnetValue = network !== "devnet";
+    const isMainnetValue = network === "mainnet";
 
     let metadata: UITokenMetadata;
 

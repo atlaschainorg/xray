@@ -1,29 +1,7 @@
 //@ts-nocheck
-import type { EnrichedTransaction } from "helius-sdk";
-
 import { t } from "$lib/trpc/t";
 import { z } from "zod";
-
-import { parseTransaction } from "$lib/xray";
-
-import {
-    VOTE_PROGRAM_ID,
-    type ConfirmedTransactionMeta,
-    type TransactionSignature,
-    Connection,
-} from "@solana/web3.js";
-import { getRPCUrl } from "$lib/util/get-rpc-url";
-
-import { HELIUS_API_KEY } from "$env/static/private";
-
-type TransactionWithInvocations = {
-    index: number;
-    signature?: TransactionSignature | undefined;
-    meta: ConfirmedTransactionMeta | null;
-    invocations: Map<string, number>;
-};
-
-const voteFilter = VOTE_PROGRAM_ID.toBase58();
+import http from "http";
 
 export const blockTransactions = t.procedure
     .input(
@@ -75,109 +53,116 @@ export const blockTransactions = t.procedure
     )
     .query(async ({ input }) => {
         const limit = input.limit ?? 100;
-        const invokedPrograms = new Map<string, number>();
+        const port = input.isMainnet ? 26667 : 26657;
 
-        const connection = new Connection(
-            getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet),
-            "confirmed"
-        );
-
-        const block = await connection.getBlock(input.slot, {
-            maxSupportedTransactionVersion: 0,
-        });
-
-        const transactions: TransactionWithInvocations[] | undefined =
-            block?.transactions.map((tx, index) => {
-                let signature: TransactionSignature | undefined;
-                if (tx.transaction.signatures.length > 0) {
-                    signature = tx.transaction.signatures[0];
-                }
-
-                const programIndexes =
-                    tx.transaction.message.compiledInstructions
-                        .map((ix) => ix.programIdIndex)
-                        .concat(
-                            tx.meta?.innerInstructions?.flatMap((ix) => {
-                                return ix.instructions.map(
-                                    (ix) => ix.programIdIndex
-                                );
-                            }) || []
-                        );
-
-                const invocations = programIndexes.reduce(
-                    (acc, programIndex) => {
-                        const programId = tx.transaction.message
-                            .getAccountKeys({
-                                accountKeysFromLookups:
-                                    tx.meta?.loadedAddresses,
-                            })
-                            .get(programIndex)!
-                            .toBase58();
-
-                        const programTransactionCount =
-                            invokedPrograms.get(programId) || 0;
-                        invokedPrograms.set(
-                            programId,
-                            programTransactionCount + 1
-                        );
-
-                        const count = acc.get(programId) || 0;
-                        acc.set(programId, count + 1);
-
-                        return acc;
+        try {
+            // Fetch block data from CometBFT
+            const blockData = await new Promise<any>((resolve, reject) => {
+                const options = {
+                    hostname: "127.0.0.1",
+                    port: port,
+                    path: `/block?height=${input.slot}`,
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
                     },
-                    new Map<string, number>()
-                );
+                };
+
+                const req = http.request(options, (res) => {
+                    let data = "";
+
+                    res.on("data", (chunk) => {
+                        data += chunk;
+                    });
+
+                    res.on("end", () => {
+                        try {
+                            const parsed = JSON.parse(data);
+                            resolve(parsed);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    });
+                });
+
+                req.on("error", (error) => {
+                    reject(error);
+                });
+
+                req.end();
+            });
+
+            if (!blockData.result || !blockData.result.block) {
+                return {
+                    oldest: "",
+                    result: [],
+                };
+            }
+
+            const block = blockData.result.block;
+            const txs = block.data?.txs || [];
+
+            if (txs.length === 0) {
+                return {
+                    oldest: "",
+                    result: [],
+                };
+            }
+
+            // Parse transactions from CometBFT block
+            const result = txs.map((txData: string, index: number) => {
+                // Generate a transaction hash (in CometBFT this would be the tx hash)
+                const txHash = Buffer.from(txData, "base64").toString("hex").substring(0, 64);
+
+                // Get timestamp in seconds (format-date expects seconds if < 13 digits)
+                const timestampMs = new Date(block.header.time).getTime();
+                const timestampSec = Math.floor(timestampMs / 1000);
 
                 return {
-                    index,
-                    invocations,
-                    meta: tx.meta,
-                    signature,
+                    signature: txHash,
+                    type: "UNKNOWN",
+                    source: "ATLAS_CHAIN",
+                    fee: 0,
+                    timestamp: timestampSec,
+                    primaryUser: "",
+                    accounts: [],
+                    actions: [
+                        {
+                            actionType: "TRANSACTION",
+                            amount: 0,
+                            from: "",
+                            to: "",
+                        }
+                    ],
+                    raw: {
+                        height: block.header.height,
+                        time: block.header.time,
+                        txData: txData,
+                    },
                 };
             });
 
-        // Filters out vote transactions -> Returns a list of the transaction signatures
-        let signatureList = transactions
-            ?.filter(
-                ({ invocations }) =>
-                    !(invocations.has(voteFilter) && invocations.size === 1)
-            )
-            .map(({ signature }) => signature);
+            // Apply cursor pagination
+            let paginatedResult = result;
+            if (input.cursor) {
+                const cursorIndex = result.findIndex(tx => tx.signature === input.cursor);
+                if (cursorIndex >= 0) {
+                    paginatedResult = result.slice(cursorIndex + 1);
+                }
+            }
 
-        if (!signatureList?.length) {
+            // Apply limit
+            paginatedResult = paginatedResult.slice(0, limit);
+
+            return {
+                oldest: paginatedResult[paginatedResult.length - 1]?.signature || "",
+                result: paginatedResult,
+            };
+        } catch (error) {
+            console.error("Error fetching block transactions:", error);
             return {
                 oldest: "",
                 result: [],
             };
         }
-
-        if (input.cursor) {
-            const lastTransactionIndex = signatureList.indexOf(input.cursor);
-
-            if (lastTransactionIndex >= 0) {
-                signatureList = signatureList.slice(lastTransactionIndex + 1);
-            }
-        }
-
-        signatureList = signatureList.slice(0, limit);
-
-        const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_API_KEY}`;
-
-        const response = await fetch(url, {
-            body: JSON.stringify({
-                transactions: signatureList,
-            }),
-
-            method: "POST",
-        });
-
-        const json: EnrichedTransaction[] = await response.json();
-
-        const result = json.map((tx) => parseTransaction(tx)) || [];
-
-        return {
-            oldest: signatureList?.slice(-1)?.[0] || "",
-            result,
-        };
     });

@@ -18,7 +18,7 @@
     let intersecting = false;
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
-    const isMainnetValue = network !== "devnet";
+    const isMainnetValue = network === "mainnet";
     const client = trpcWithQuery($page);
 
     export const metadata: UITokenMetadata = {
@@ -50,8 +50,8 @@
     let element: HTMLDivElement;
 
     $: if (address === SOL) {
-        metadata.name = "SOL";
-        metadata.image = "/media/tokens/solana.png";
+        metadata.name = "ATLAS";
+        metadata.image = "/media/tokens/atlas.png";
         metadata.address = SOL;
     } else if (data?.compressed) {
         metadata.address = data?.address || "";

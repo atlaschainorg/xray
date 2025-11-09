@@ -1,14 +1,42 @@
 import { json, type RequestEvent } from "@sveltejs/kit";
 
-import { search, connect } from "$lib/xray";
+// Search for Atlas Chain items (transaction hashes, block heights, addresses)
+export async function GET({ params, url }: RequestEvent) {
+    const query = params?.query || "";
+    const network = url.searchParams.get("network") || "testnet";
 
-import { HELIUS_API_KEY } from "$env/static/private";
+    if (!query) {
+        return json({ type: "unknown", value: null });
+    }
 
-// Consume a search, return what to do with it
-export async function GET({ params }: RequestEvent) {
-    const conection = connect("mainnet", HELIUS_API_KEY);
+    // Check if it's a number (block height)
+    if (/^\d+$/.test(query)) {
+        return json({
+            type: "block",
+            value: parseInt(query),
+        });
+    }
 
-    const result = await search(params?.query || "", conection);
+    // Check if it's a transaction hash (hex string, 64 characters)
+    if (/^[0-9A-Fa-f]{64}$/.test(query)) {
+        return json({
+            type: "transaction",
+            value: query.toLowerCase(),
+        });
+    }
 
-    return json(result);
+    // Check if it's an account/address (hex string, typically 40 characters for Ethereum-style)
+    // Adjust this based on your address format
+    if (/^[0-9A-Fa-f]{40,66}$/.test(query)) {
+        return json({
+            type: "account",
+            value: query.toLowerCase(),
+        });
+    }
+
+    // Default: treat as transaction hash and let the tx page handle "not found"
+    return json({
+        type: "transaction",
+        value: query.toLowerCase(),
+    });
 }

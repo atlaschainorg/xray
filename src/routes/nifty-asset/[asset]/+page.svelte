@@ -48,7 +48,7 @@
     const address = $page.params.asset;
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
-    const isMainnetValue = network !== "devnet";
+    const isMainnetValue = network === "mainnet";
     const KNOWN_IMAGE_EXTENSIONS = [
         "image/png",
         "image/jpeg",

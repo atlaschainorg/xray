@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getSolanaName } from "$lib/xray";
+    import { getAtlasName } from "$lib/xray";
 
     import shortenString from "$lib/util/shorten-string";
 
@@ -10,7 +10,7 @@
     let result: string = "";
 
     $: {
-        result = getSolanaName(text) || shortenString(text);
+        result = getAtlasName(text) || shortenString(text);
         shortened = shortenString(result, 8);
         shortenedOriginal = shortenString(text, 6);
     }

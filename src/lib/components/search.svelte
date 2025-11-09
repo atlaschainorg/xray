@@ -143,7 +143,7 @@
         focusInput();
         const params = new URLSearchParams(window.location.search);
         const network = params.get("network");
-        isMainnetValue = network !== "devnet";
+        isMainnetValue = network === "mainnet";
         inputValue = $walletStore.publicKey?.toBase58() || "";
         addRecent({
             address: inputValue,
@@ -167,7 +167,7 @@
             bind:this={inputEl}
             class="input-bordered input h-10 w-full rounded-lg focus:input-primary"
             class:h-14={size === "lg"}
-            placeholder="Input a Solana address, transaction signature, or domain..."
+            placeholder="Input an Atlas address, transaction signature, or domain..."
             tabindex="0"
             type="text"
             on:focusin={() => dispatch("focusin")}

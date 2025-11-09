@@ -18,8 +18,11 @@ import { tps } from "$lib/trpc/routes/tps";
 import { transaction } from "$lib/trpc/routes/transaction";
 import { transactions } from "$lib/trpc/routes/transactions";
 import { blockTransactions } from "$lib/trpc/routes/block-transactions";
+import { blockResults } from "$lib/trpc/routes/block-results";
 import { assets } from "$lib/trpc/routes/assets";
 import { cnftTransactions } from "./routes/cnft-transactions";
+import { latestBlocks } from "$lib/trpc/routes/latest-blocks";
+import { txSearch } from "$lib/trpc/routes/tx-search";
 
 export const t = initTRPC.context<Context>().create();
 
@@ -29,11 +32,13 @@ export const router = t.router({
     asset,
     assets,
     balances,
+    blockResults,
     blockTransactions,
     cnftTransactions,
     concurrentMerkleTree,
     currentSlot,
     deprecatedImage,
+    latestBlocks,
     niftyAsset,
     price,
     rawTransaction,
@@ -42,6 +47,7 @@ export const router = t.router({
     tps,
     transaction,
     transactions,
+    txSearch,
 });
 
 export type Router = typeof router;
