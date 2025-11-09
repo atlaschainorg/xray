@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html
     lang="en"
-    data-theme="helius"
+    data-theme="atlas-dark"
 >
     <head>
         <meta charset="utf-8" />
@@ -11,11 +11,11 @@
         />
         <meta
             property="og:url"
-            content="https://xray.helius.xyz"
+            content="https://xray.atlas.xyz"
         />
         <meta
             property="og:image"
-            content="https://xray.helius.xyz/media/linkpreview.jpg"
+            content="https://xray.atlas.xyz/media/linkpreview.jpg"
         />
         <meta
             property="og:image:width"
@@ -43,11 +43,11 @@
         />
         <meta
             name="twitter:url"
-            content="https://xray.helius.xyz"
+            content="https://xray.atlas.xyz"
         />
         <meta
             name="twitter:image"
-            content="https://xray.helius.xyz/media/linkpreview.jpg"
+            content="https://xray.atlas.xyz/media/linkpreview.jpg"
         />
         <link
             rel="icon"
@@ -75,6 +75,14 @@
         <title>Summit Explorer</title>
 
         %sveltekit.head%
+
+        <!-- Initialize theme from localStorage before page renders to prevent flash -->
+        <script>
+            (function() {
+                const theme = localStorage.getItem('theme') || 'atlas-dark';
+                document.documentElement.setAttribute('data-theme', theme);
+            })();
+        </script>
     </head>
     <body data-sveltekit-preload-data="hover">
         <div style="display: contents">%sveltekit.body%</div>

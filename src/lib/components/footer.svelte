@@ -17,7 +17,7 @@
                 />
             </a>
             <a
-                href="https://twitter.com/heliuslabs"
+                href="https://twitter.com/atlaslabs"
                 class="btn-ghost btn"
             >
                 <Icon

@@ -24,7 +24,7 @@
     let searchError = "";
 
     let exploreELement: HTMLElement;
-    let heliusElement: HTMLElement;
+    let atlasElement: HTMLElement;
 
     let isFocused = false;
 

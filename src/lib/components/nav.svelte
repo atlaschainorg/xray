@@ -9,6 +9,8 @@
     import Network from "$lib/components/network.svelte";
 
     import { showModal } from "$lib/state/stores/modals";
+    import { theme, toggleTheme } from "$lib/util/stores/theme";
+
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
     const isMainnetValue = network === "mainnet";
@@ -80,6 +82,20 @@
                     </button>
                 </div>
             {/if}
+            <div
+                class="tooltip"
+                data-tip={$theme === "atlas-dark" ? "Light Mode" : "Dark Mode"}
+            >
+                <button
+                    class="btn-ghost btn"
+                    on:click={toggleTheme}
+                >
+                    <Icon
+                        id={$theme === "atlas-dark" ? "sun" : "moon"}
+                        size="md"
+                    />
+                </button>
+            </div>
             <div
                 class="tooltip"
                 data-tip="Help"

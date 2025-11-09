@@ -4,7 +4,7 @@ const config = {
     daisyui: {
         themes: [
             {
-                helius: {
+                "atlas-dark": {
                     accent: "#ea580c",
 
                     "base-100": "black",
@@ -20,6 +20,27 @@ const config = {
                     "primary-content": "#f5f5f4",
 
                     secondary: "#1d1d1d",
+
+                    success: "#34d399",
+
+                    warning: "#FBBD23",
+                },
+                "atlas-light": {
+                    accent: "#ea580c",
+
+                    "base-100": "#ffffff",
+
+                    error: "#ee2222",
+
+                    info: "#2563eb",
+
+                    neutral: "#616161",
+
+                    primary: "#1f2937",
+
+                    "primary-content": "#f5f5f4",
+
+                    secondary: "#f5f5f4",
 
                     success: "#34d399",
 

@@ -1,17 +1,17 @@
 <script>
-    import heliusIcon from "$lib/assets/helius/helius-icon.png";
+    import atlasIcon from "$lib/assets/atlas/atlas-icon.png";
 </script>
 
 <a
     class="btn-ghost btn flex items-center text-left"
-    href="https://helius.xyz/"
+    href="https://atlas.xyz/"
     rel="noreferrer"
     target="_blank"
 >
     <div class="relative mr-3">
         <img
             class="w-5"
-            src={heliusIcon}
+            src={atlasIcon}
             alt=""
         />
     </div>

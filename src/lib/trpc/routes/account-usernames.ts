@@ -10,7 +10,7 @@ interface Username {
 }
 
 const getAtlasDomain = async (usernames: Username[], address = "") => {
-    const url = `https://api.helius.xyz/v0/addresses/${address}/names?api-key=${HELIUS_API_KEY}`;
+    const url = `https://api.atlas.xyz/v0/addresses/${address}/names?api-key=${HELIUS_API_KEY}`;
     const response = await fetch(url);
     const data = await response.json();
 

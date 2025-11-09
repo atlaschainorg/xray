@@ -51,7 +51,7 @@
                     {#if label === "proton"}
                         Parsed transaction data from Summit Explorer's Proton
                     {:else if label === "enriched"}
-                        Enriched transaction data from the Helius API
+                        Enriched transaction data from the Atlas API
                     {:else if label === "raw"}
                         Raw transaction data from the Atlas RPC
                     {/if}

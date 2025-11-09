@@ -127,11 +127,11 @@
             // (1 second minimum ensures reasonable TPS calculation)
             if (isNaN(timeSpanSeconds) || timeSpanSeconds < 1 || timeSpanSeconds > 3600) {
                 console.error("Invalid time span:", {
-                    timeSpanSeconds,
                     firstTime,
                     lastTime,
+                    reason: timeSpanSeconds < 1 ? "Too short (< 1 sec)" : "Too long or invalid",
                     timeDiffMs,
-                    reason: timeSpanSeconds < 1 ? "Too short (< 1 sec)" : "Too long or invalid"
+                    timeSpanSeconds
                 });
                 currentTPS = 0;
                 isLoadingTPS = false;

@@ -350,7 +350,7 @@
                                     <h4
                                         class="text-lg font-semibold md:text-sm"
                                     >
-                                        Helius Description
+                                        Atlas Description
                                     </h4>
                                     <p class="break-all text-xs opacity-50">
                                         {data?.raw?.description}
