@@ -8,7 +8,7 @@
     <div class="col-span-1 flex w-full justify-end">
         <div class="mr-12">
             <a
-                href="https://discord.com/invite/6GXdee3gBj"
+                href="https://discord.gg/9cSuBhs2"
                 class="btn-ghost btn"
             >
                 <Icon

@@ -30,7 +30,7 @@
                 }}
             >
                 <span class="font-bold">TPS </span>
-                <span class="opacity-50">{$tps?.data?.toFixed(0)}</span>
+                <span class="opacity-50">{Math.round($tps?.data ?? 0).toLocaleString()}</span>
             </div>
         {:else}
             <div class="pulse my-2 h-2 w-16 rounded-lg bg-secondary" />
